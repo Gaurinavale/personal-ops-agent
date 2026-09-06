@@ -1,5 +1,5 @@
 import asyncio
-from agent.agent_graph import build_agent
+from agent.agent_graph import build_agent, chat_with_memory
 
 
 async def chat():
@@ -13,23 +13,7 @@ async def chat():
             print("Goodbye!")
             break
 
-        # Send the user's message to the agent
-        result = await agent.ainvoke(
-            {"messages": [{"role": "user", "content": user_input}]}
-        )
-
-        # The agent's final reply is the last message in the returned state
-        final_message = result["messages"][-1]
-        content = final_message.content
-
-        if isinstance(content, list):
-            # Extract just the text parts from structured content blocks
-            text = "".join(
-                block.get("text", "") for block in content if isinstance(block, dict)
-            )
-        else:
-            text = content
-
+        text = await chat_with_memory(agent, user_input)
         print(f"Agent: {text}\n")
 
 
