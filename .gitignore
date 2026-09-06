@@ -4,3 +4,4 @@ __pycache__/
 mcp_server/tasks.db
 .env
 chroma_memory/
+.agents/
